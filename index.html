@@ -1025,6 +1025,227 @@
             z-index: 9999;
             transition: width 0.1s ease;
         }
+
+        /* ASCII Art Generator Modal Styles */
+        .ascii-modal {
+            display: none;
+            position: fixed;
+            z-index: 10001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .ascii-modal-content {
+            background: var(--bg-darker);
+            margin: 2% auto;
+            border: 2px solid var(--primary-color);
+            width: 95%;
+            height: 95%;
+            border-radius: 10px;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+        }
+
+        .ascii-modal-header {
+            background: var(--gradient-3);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .ascii-modal-header h2 {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .ascii-close-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .ascii-close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .ascii-container {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .ascii-main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .ascii-panel {
+            border: 1px solid var(--primary-color);
+            background: rgba(0, 212, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        .ascii-panel h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.3em;
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+
+        .ascii-canvas-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #asciiDrawingCanvas {
+            border: 2px solid var(--primary-color);
+            background: var(--bg-darker);
+            cursor: crosshair;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            border-radius: 5px;
+        }
+
+        .ascii-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ascii-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 5px;
+        }
+
+        .ascii-btn:hover {
+            background: var(--primary-color);
+            color: var(--bg-darker);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .ascii-btn.active {
+            background: var(--primary-color);
+            color: var(--bg-darker);
+        }
+
+        #asciiDensitySelect {
+            background: var(--bg-darker);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px;
+            font-family: 'Courier New', monospace;
+            border-radius: 5px;
+        }
+
+        .ascii-output {
+            background: var(--bg-darker);
+            border: 2px solid var(--primary-color);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1;
+            white-space: pre;
+            overflow: auto;
+            max-height: 400px;
+            min-height: 200px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            color: var(--primary-color);
+            border-radius: 5px;
+        }
+
+        .ascii-tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ascii-copy-btn {
+            background: var(--gradient-3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            border-radius: 25px;
+            text-transform: uppercase;
+        }
+
+        .ascii-copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .ascii-status {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .ascii-status.success {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .ascii-main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .ascii-modal-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            #asciiDrawingCanvas {
+                width: 100%;
+                height: 250px;
+            }
+
+            .ascii-modal-content {
+                width: 98%;
+                height: 98%;
+                margin: 1% auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1067,6 +1288,7 @@
                 <li><a href="#projects">~/projects</a></li>
                 <li><a href="#skills">~/skills</a></li>
                 <li><a href="#contact">~/connect</a></li>
+                <li><a href="#random" id="randomLink">~/random</a></li>
             </ul>
         </div>
     </nav>
@@ -1381,7 +1603,86 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Random Section -->
+    <section id="random">
+        <div class="section-container">
+            <h2 class="section-title fade-in">// Creative Tools</h2>
+            <div class="experience-grid">
+                <div class="experience-card fade-in">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">ASCII Art Generator</div>
+                            <div class="experience-company">Terminal-Ready Art Creator</div>
+                        </div>
+                        <div class="experience-duration">Interactive</div>
+                    </div>
+                    <div class="experience-description">
+                        Create beautiful ASCII art from your drawings! Features a full drawing canvas with multiple tools, real-time ASCII conversion, and terminal-ready output perfect for code comments and digital art.
+                        <br><br>
+                        <button class="project-link-btn" id="openAsciiGenerator">
+                            Launch ASCII Generator
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASCII Art Generator Modal -->
+    <div class="ascii-modal" id="asciiModal">
+        <div class="ascii-modal-content">
+            <div class="ascii-modal-header">
+                <h2>◢ ASCII ART GENERATOR ◣</h2>
+                <button class="ascii-close-btn" id="closeAsciiGenerator">&times;</button>
+            </div>
+            
+            <div class="ascii-container">
+                <div class="ascii-main-content">
+                    <div class="ascii-panel">
+                        <h3>▶ DRAWING CANVAS</h3>
+                        <div class="ascii-canvas-container">
+                            <canvas id="asciiDrawingCanvas" width="400" height="300"></canvas>
+                        </div>
+                        
+                        <div class="ascii-tools">
+                            <button class="ascii-btn active" id="asciiPenTool">PEN</button>
+                            <button class="ascii-btn" id="asciiLineTool">LINE</button>
+                            <button class="ascii-btn" id="asciiRectTool">RECTANGLE</button>
+                            <button class="ascii-btn" id="asciiCircleTool">CIRCLE</button>
+                            <button class="ascii-btn" id="asciiEraserTool">ERASER</button>
+                        </div>
+
+                        <div class="ascii-controls">
+                            <button class="ascii-btn" id="asciiClearBtn">CLEAR</button>
+                            <button class="ascii-btn" id="asciiGenerateBtn">GENERATE ASCII</button>
+                            <select id="asciiDensitySelect">
+                                <option value="high">High Detail</option>
+                                <option value="medium" selected>Medium Detail</option>
+                                <option value="low">Low Detail</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ascii-panel">
+                        <h3>▶ ASCII OUTPUT</h3>
+                        <div class="ascii-output" id="asciiOutputArea">// Draw something on the canvas
+// and click GENERATE ASCII
+//
+//  ████████╗███████╗██████╗ ███╗   ███╗██╗███╗   ██╗ █████╗ ██╗     
+//  ╚══██╔══╝██╔════╝██╔══██╗████╗ ████║██║████╗  ██║██╔══██╗██║     
+//     ██║   █████╗  ██████╔╝██╔████╔██║██║██╔██╗ ██║███████║██║     
+//     ██║   ██╔══╝  ██╔══██╗██║╚██╔╝██║██║██║╚██╗██║██╔══██║██║     
+//     ██║   ███████╗██║  ██║██║ ╚═╝ ██║██║██║ ╚████║██║  ██║███████╗
+//     ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
+//
+//                        READY TO CONVERT!</div>
+                        <button class="ascii-copy-btn" id="asciiCopyBtn">COPY TO CLIPBOARD</button>
+                        <div class="ascii-status" id="asciiStatus" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <section id="contact">
         <div class="section-container">
             <h2 class="section-title fade-in">// Establish Connection</h2>
@@ -1479,8 +1780,9 @@
             "Attempting to connect to ellie.dev...",
             "Host key verification successful.",
             "Welcome to Ellie's Portfolio Server!",
+            "Last login: Fri Aug 30 2025 from 192.168.1.1",
             "Loading portfolio components...",
-            "Connection established successfully!"
+            "Connection established successfully! 🚀"
         ];
 
         let messageIndex = 0;
