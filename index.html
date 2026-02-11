@@ -690,63 +690,22 @@
             --card-color: rgba(255, 107, 157, 0.6); 
             border-color: rgba(255, 107, 157, 0.2);
         }
-
-        /* Animated border on hover - ultra soft with larger coverage */
+        
+        /* Soft color glow on hover - NO ROTATION */
         .experience-card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: conic-gradient(
-                from 0deg,
-                transparent 0deg,
-                var(--card-color) 15deg,
-                var(--card-color) 320deg,
-                transparent 345deg,
-                transparent 360deg
-            );
+            inset: 0;
+            background: var(--card-color);
             border-radius: 20px;
             opacity: 0;
             transition: opacity 0.5s ease;
-            animation: rotate-border 6s linear infinite;
-            animation-play-state: paused;
-            filter: blur(15px);
+            filter: blur(20px);
+            z-index: 0;
         }
-
-        .experience-card::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: conic-gradient(
-                from 180deg,
-                transparent 0deg,
-                var(--card-color) 15deg,
-                var(--card-color) 320deg,
-                transparent 345deg,
-                transparent 360deg
-            );
-            border-radius: 20px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            animation: rotate-border 6s linear infinite;
-            animation-play-state: paused;
-            filter: blur(15px);
-        }
-
-        .experience-card:hover::before,
-        .experience-card:hover::after {
-            opacity: 0.12;
-            animation-play-state: running;
-        }
-
-        @keyframes rotate-border {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .experience-card:hover::before {
+            opacity: 0.15;
         }
 
         .experience-card:nth-child(even) {
