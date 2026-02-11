@@ -488,6 +488,55 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Typewriter effect */
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--secondary);
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        .typewriter-description {
+            overflow: hidden;
+            border-right: 3px solid var(--secondary);
+            white-space: normal;
+            animation: typing-description 5s steps(150, end) 3.5s both, blink-caret 0.75s step-end infinite 3.5s;
+        }
+        
+        @keyframes typing {
+            from { 
+                width: 0;
+            }
+            to { 
+                width: 100%;
+            }
+        }
+        
+        @keyframes typing-description {
+            from { 
+                max-width: 0;
+            }
+            to { 
+                max-width: 100%;
+            }
+        }
+        
+        @keyframes blink-caret {
+            from, to { 
+                border-color: transparent;
+            }
+            50% { 
+                border-color: var(--secondary);
+            }
+        }
+        
+        /* Hide caret after typing completes */
+        .typewriter.typing-done,
+        .typewriter-description.typing-done {
+            border-right: none;
+            animation: none;
+        }
+
         .cta-button {
             display: inline-block;
             padding: 1.3rem 3.5rem;
@@ -1690,8 +1739,8 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Ellie Chang</h1>
-            <div class="subtitle">Computer Science & Data Science @ UofT</div>
-            <div class="description">
+            <div class="subtitle typewriter" id="subtitle">Computer Science & Data Science @ UofT</div>
+            <div class="description typewriter-description" id="description">
                 I'm a second year student passionate about AI, machine learning, and creating technology solutions that inspire positive change in the digital realm
             </div>
             <a href="#experience" class="cta-button">Begin the Journey</a>
@@ -2095,7 +2144,26 @@
     </footer>
 
     <script>
-        // Math Game Logic
+        // Typewriter effect - remove caret after animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const subtitle = document.getElementById('subtitle');
+            const description = document.getElementById('description');
+            
+            // Remove caret from subtitle after 4 seconds
+            setTimeout(() => {
+                if (subtitle) {
+                    subtitle.classList.add('typing-done');
+                }
+            }, 4000);
+            
+            // Remove caret from description after 9 seconds
+            setTimeout(() => {
+                if (description) {
+                    description.classList.add('typing-done');
+                }
+            }, 9000);
+        });
+        
         let hintShown = false;
         const correctAnswer = "1.008"; // 40320 km / 11 km/s = 3665.45 seconds = 1.018 hours
 
