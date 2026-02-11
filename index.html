@@ -537,34 +537,12 @@
             transform: translateY(0);
         }
 
-        /* Experience Cards with Timeline */
+        /* Experience Cards with Left/Right Alternating Layout (NO timeline line) */
         .experience-grid {
             display: grid;
             gap: 4rem;
             margin-top: 4rem;
             position: relative;
-        }
-
-        /* Vertical timeline line */
-        .experience-grid::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, 
-                transparent 0%,
-                var(--secondary) 10%,
-                var(--secondary) 90%,
-                transparent 100%);
-            transform: translateX(-50%) scaleY(0);
-            transform-origin: top;
-            animation: timeline-grow 1s ease 0.5s forwards;
-        }
-
-        @keyframes timeline-grow {
-            to { transform: translateX(-50%) scaleY(1); }
         }
 
         .experience-card {
@@ -580,7 +558,7 @@
             transform: translateX(-100px);
         }
 
-        /* Alternate sides for timeline effect */
+        /* Alternate sides for staggered effect */
         .experience-card:nth-child(even) {
             transform: translateX(100px);
             margin-left: auto;
@@ -590,29 +568,6 @@
         .experience-card:nth-child(odd) {
             margin-right: auto;
             max-width: 85%;
-        }
-
-        /* Timeline dots */
-        .experience-card::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--secondary);
-            border-radius: 50%;
-            border: 4px solid var(--bg-dark);
-            box-shadow: 0 0 20px var(--secondary);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-
-        .experience-card:nth-child(odd)::after {
-            right: -60px;
-        }
-
-        .experience-card:nth-child(even)::after {
-            left: -60px;
         }
 
         /* When visible */
@@ -1082,13 +1037,13 @@
 
         .experience-card {
             opacity: 0;
-            transform: translateX(-30px);
+            transform: translateY(30px);
             transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         .experience-card.reveal {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0);
         }
 
         /* Card Flip Animation for Projects */
@@ -1218,7 +1173,7 @@
             }
         }
 
-        /* Planets */
+        /* Planets with Rings */
         .planet {
             position: fixed;
             border-radius: 50%;
@@ -1238,6 +1193,19 @@
             animation-delay: 0s;
         }
 
+        .planet-1::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 70px;
+            border: 2px solid rgba(255, 154, 86, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(70deg);
+            box-shadow: 0 0 10px rgba(255, 94, 120, 0.3);
+        }
+
         .planet-2 {
             width: 60px;
             height: 60px;
@@ -1249,6 +1217,19 @@
             animation-delay: -30s;
         }
 
+        .planet-2::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 3px solid rgba(181, 128, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(65deg);
+            box-shadow: 0 0 15px rgba(181, 128, 255, 0.4);
+        }
+
         .planet-3 {
             width: 30px;
             height: 30px;
@@ -1258,6 +1239,19 @@
             top: 80%;
             right: -40px;
             animation-delay: -45s;
+        }
+
+        .planet-3::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 55px;
+            height: 55px;
+            border: 2px solid rgba(0, 217, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
         }
 
         @keyframes planet-drift {
@@ -2059,30 +2053,6 @@
         document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
-
-        // Timeline reveal for Experience section
-        const experienceGrid = document.querySelector('#experience .experience-grid');
-        if (experienceGrid) {
-            experienceGrid.classList.add('timeline-reveal');
-            
-            const timelineObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        
-                        // Reveal cards one by one with timeline effect
-                        const cards = entry.target.querySelectorAll('.experience-card');
-                        cards.forEach((card, index) => {
-                            setTimeout(() => {
-                                card.classList.add('reveal');
-                            }, index * 200);
-                        });
-                    }
-                });
-            }, { threshold: 0.2 });
-            
-            timelineObserver.observe(experienceGrid);
-        }
 
         // Card flip animation for Projects
         document.querySelectorAll('.project-card').forEach((card, index) => {
