@@ -144,6 +144,96 @@
             z-index: -1;
         }
 
+        /* Flying Rocket along Journey Path */
+        .flying-rocket {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 60px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .flying-rocket.visible {
+            opacity: 0.3;
+        }
+
+        .flying-rocket.visible.dimmed {
+            opacity: 0.15;
+        }
+
+        .flying-rocket .rocket-nose {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 18px solid white;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+        }
+
+        .flying-rocket .rocket-body {
+            position: absolute;
+            width: 20px;
+            height: 28px;
+            background: white;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 15px;
+            border-radius: 2px;
+        }
+
+        .flying-rocket .rocket-window {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 22px;
+            box-shadow: 0 0 8px var(--secondary);
+        }
+
+        .flying-rocket .rocket-fin-left {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 15px solid white;
+            border-left: 10px solid transparent;
+            left: -2px;
+            bottom: 2px;
+        }
+
+        .flying-rocket .rocket-fin-right {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 15px solid white;
+            border-right: 10px solid transparent;
+            right: -2px;
+            bottom: 2px;
+        }
+
+        .flying-rocket .rocket-flame {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 15px solid #ff5e78;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -12px;
+            animation: flame-flicker 0.2s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
         /* Navigation */
         nav {
             position: fixed;
@@ -183,7 +273,7 @@
             gap: 1rem;
         }
 
-        /* 改進的 CSS 火箭 */
+        /* CSS 火箭 */
         .rocket {
             position: relative;
             width: 30px;
@@ -193,7 +283,6 @@
             filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
         }
 
-        /* 火箭頭部 (三角形) */
         .rocket-nose {
             position: absolute;
             width: 0;
@@ -206,7 +295,6 @@
             top: 0;
         }
 
-        /* 火箭主體 */
         .rocket-body {
             position: absolute;
             width: 16px;
@@ -218,7 +306,6 @@
             border-radius: 2px;
         }
 
-        /* 火箭窗戶 */
         .rocket-window {
             position: absolute;
             width: 6px;
@@ -231,7 +318,6 @@
             box-shadow: 0 0 5px var(--secondary);
         }
 
-        /* 左側翼 */
         .rocket-fin-left {
             position: absolute;
             width: 0;
@@ -242,7 +328,6 @@
             bottom: 2px;
         }
 
-        /* 右側翼 */
         .rocket-fin-right {
             position: absolute;
             width: 0;
@@ -253,7 +338,6 @@
             bottom: 2px;
         }
 
-        /* 火箭噴射火焰 */
         .rocket-flame {
             position: absolute;
             width: 0;
@@ -381,7 +465,7 @@
         .hero .subtitle {
             font-size: clamp(1.3rem, 3vw, 2rem);
             margin-bottom: 2rem;
-            margin-top: 2.5rem;
+            margin-top: 1rem;
             color: var(--text-primary);
             font-weight: 500;
             animation: fadeInUp 1s ease 0.3s both;
@@ -440,12 +524,13 @@
             box-shadow: 0 20px 60px rgba(255, 94, 120, 0.6);
         }
 
-        /* Geometric shapes decoration */
+        /* Geometric shapes decoration with morphing */
         .geometric-shape {
             position: absolute;
             border: 2px solid;
             opacity: 0.15;
             pointer-events: none;
+            animation: morph-shape 15s ease-in-out infinite;
         }
 
         .circle-1 {
@@ -455,7 +540,7 @@
             border-radius: 50%;
             top: 20%;
             right: 10%;
-            animation: rotate-slow 30s linear infinite;
+            animation: rotate-slow 30s linear infinite, morph-circle 20s ease-in-out infinite;
         }
 
         .square-1 {
@@ -464,7 +549,7 @@
             border-color: var(--primary);
             bottom: 20%;
             left: 15%;
-            animation: rotate-reverse 25s linear infinite;
+            animation: rotate-reverse 25s linear infinite, morph-square 18s ease-in-out infinite;
             transform-origin: center;
         }
 
@@ -477,7 +562,7 @@
             border-style: solid;
             top: 40%;
             left: 5%;
-            animation: float-shape 15s ease-in-out infinite;
+            animation: float-shape 15s ease-in-out infinite, morph-triangle 16s ease-in-out infinite;
         }
 
         @keyframes rotate-slow {
@@ -495,13 +580,35 @@
             50% { transform: translateY(-30px) rotate(10deg); }
         }
 
+        @keyframes morph-circle {
+            0%, 100% { border-radius: 50%; transform: scale(1) rotate(0deg); }
+            33% { border-radius: 30%; transform: scale(1.1) rotate(120deg); }
+            66% { border-radius: 40%; transform: scale(0.95) rotate(240deg); }
+        }
+
+        @keyframes morph-square {
+            0%, 100% { border-radius: 0%; transform: rotate(0deg) scale(1); }
+            33% { border-radius: 30%; transform: rotate(-120deg) scale(1.15); }
+            66% { border-radius: 50%; transform: rotate(-240deg) scale(0.9); }
+        }
+
+        @keyframes morph-triangle {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg) scale(1);
+                filter: blur(0px);
+            }
+            50% { 
+                transform: translateY(-30px) rotate(10deg) scale(1.1);
+                filter: blur(2px);
+            }
+        }
+
         /* Sections */
         section {
             padding: 8rem 0;
             position: relative;
         }
 
-        /* Elegant section divider line */
         section::before {
             content: '';
             position: absolute;
@@ -537,7 +644,7 @@
             transform: translateY(0);
         }
 
-        /* Experience Cards with Left/Right Alternating Layout (NO timeline line) */
+        /* Experience Cards with custom colors and border animation */
         .experience-grid {
             display: grid;
             gap: 4rem;
@@ -550,7 +657,7 @@
             backdrop-filter: blur(20px);
             padding: 2.5rem;
             border-radius: 20px;
-            border: 1px solid rgba(0, 217, 255, 0.2);
+            border: 2px solid rgba(0, 217, 255, 0.2);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
@@ -558,7 +665,90 @@
             transform: translateX(-100px);
         }
 
-        /* Alternate sides for staggered effect */
+        /* Card color themes - softer colors */
+        .experience-card:nth-child(1) { 
+            --card-color: rgba(0, 217, 255, 0.6); 
+            border-color: rgba(0, 217, 255, 0.2);
+        }
+        .experience-card:nth-child(2) { 
+            --card-color: rgba(181, 128, 255, 0.6); 
+            border-color: rgba(181, 128, 255, 0.2);
+        }
+        .experience-card:nth-child(3) { 
+            --card-color: rgba(255, 94, 120, 0.6); 
+            border-color: rgba(255, 94, 120, 0.2);
+        }
+        .experience-card:nth-child(4) { 
+            --card-color: rgba(255, 184, 0, 0.6); 
+            border-color: rgba(255, 184, 0, 0.2);
+        }
+        .experience-card:nth-child(5) { 
+            --card-color: rgba(0, 255, 136, 0.6); 
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+        .experience-card:nth-child(6) { 
+            --card-color: rgba(255, 107, 157, 0.6); 
+            border-color: rgba(255, 107, 157, 0.2);
+        }
+
+        /* Animated border on hover - ultra soft with larger coverage */
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                var(--card-color) 15deg,
+                var(--card-color) 320deg,
+                transparent 345deg,
+                transparent 360deg
+            );
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: rotate-border 6s linear infinite;
+            animation-play-state: paused;
+            filter: blur(15px);
+        }
+
+        .experience-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: conic-gradient(
+                from 180deg,
+                transparent 0deg,
+                var(--card-color) 15deg,
+                var(--card-color) 320deg,
+                transparent 345deg,
+                transparent 360deg
+            );
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            animation: rotate-border 6s linear infinite;
+            animation-play-state: paused;
+            filter: blur(15px);
+        }
+
+        .experience-card:hover::before,
+        .experience-card:hover::after {
+            opacity: 0.12;
+            animation-play-state: running;
+        }
+
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .experience-card:nth-child(even) {
             transform: translateX(100px);
             margin-left: auto;
@@ -570,7 +760,6 @@
             max-width: 85%;
         }
 
-        /* When visible */
         .experience-card.visible {
             opacity: 1;
             transform: translateX(0);
@@ -579,7 +768,6 @@
         .experience-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 60px rgba(0, 217, 255, 0.2);
-            border-color: var(--secondary);
         }
 
         .experience-header {
@@ -589,6 +777,8 @@
             margin-bottom: 1.5rem;
             flex-wrap: wrap;
             gap: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .experience-title {
@@ -648,6 +838,8 @@
             color: var(--text-secondary);
             line-height: 1.8;
             font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* Projects Grid with 3D Flip */
@@ -1013,28 +1205,6 @@
             box-shadow: 0 0 10px var(--secondary);
         }
 
-        /* Timeline Animation for Experience */
-        .timeline-reveal {
-            position: relative;
-        }
-
-        .timeline-reveal::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 0;
-            background: linear-gradient(to bottom, rgba(0, 217, 255, 0.3), rgba(0, 217, 255, 0.1));
-            border-radius: 2px;
-            transition: height 1.2s ease;
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
-        }
-
-        .timeline-reveal.active::before {
-            height: 100%;
-        }
-
         .experience-card {
             opacity: 0;
             transform: translateY(30px);
@@ -1095,7 +1265,6 @@
             transform: translateY(0);
         }
 
-        /* Elegant animated gradient line above sections */
         section.section-visible::before {
             animation: line-glow 2s ease-in-out;
         }
@@ -1114,7 +1283,6 @@
             }
         }
 
-        /* Section title entrance with subtle scale */
         .section-title {
             font-size: clamp(2.5rem, 5vw, 4rem);
             text-align: center;
@@ -1173,23 +1341,30 @@
             }
         }
 
-        /* Planets with Rings */
+        /* Enhanced Planets with Rings */
         .planet {
             position: fixed;
             border-radius: 50%;
             pointer-events: none;
             z-index: -1;
             animation: planet-drift 60s linear infinite;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .planet:hover {
+            transform: scale(1.2) !important;
         }
 
         .planet-1 {
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle at 30% 30%, #ff9a56, #ff5e78);
-            box-shadow: 0 0 30px rgba(255, 94, 120, 0.4),
-                        inset -10px -10px 20px rgba(0, 0, 0, 0.3);
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #ff8c00);
+            box-shadow: 0 0 40px rgba(255, 140, 0, 0.6),
+                        inset -15px -15px 30px rgba(0, 0, 0, 0.4);
             top: 20%;
-            right: -50px;
+            right: -60px;
             animation-delay: 0s;
         }
 
@@ -1198,22 +1373,35 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 70px;
-            height: 70px;
-            border: 2px solid rgba(255, 154, 86, 0.4);
+            width: 90px;
+            height: 90px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotateX(70deg);
-            box-shadow: 0 0 10px rgba(255, 94, 120, 0.3);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4),
+                        inset 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .planet-1::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 75px;
+            height: 75px;
+            border: 2px solid rgba(255, 200, 50, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(70deg);
         }
 
         .planet-2 {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle at 35% 35%, #b580ff, #667eea);
-            box-shadow: 0 0 40px rgba(181, 128, 255, 0.4),
-                        inset -15px -15px 30px rgba(0, 0, 0, 0.3);
+            width: 70px;
+            height: 70px;
+            background: radial-gradient(circle at 35% 35%, #b580ff, #7b2cbf);
+            box-shadow: 0 0 50px rgba(181, 128, 255, 0.6),
+                        inset -20px -20px 40px rgba(0, 0, 0, 0.4);
             top: 60%;
-            right: -70px;
+            right: -80px;
             animation-delay: -30s;
         }
 
@@ -1222,22 +1410,35 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 100px;
-            height: 100px;
-            border: 3px solid rgba(181, 128, 255, 0.5);
+            width: 130px;
+            height: 130px;
+            border: 4px solid rgba(181, 128, 255, 0.6);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotateX(65deg);
-            box-shadow: 0 0 15px rgba(181, 128, 255, 0.4);
+            box-shadow: 0 0 20px rgba(181, 128, 255, 0.5),
+                        inset 0 0 20px rgba(181, 128, 255, 0.3);
+        }
+
+        .planet-2::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 110px;
+            height: 110px;
+            border: 3px solid rgba(150, 100, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(65deg);
         }
 
         .planet-3 {
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle at 40% 40%, #00d9ff, #0099ff);
-            box-shadow: 0 0 25px rgba(0, 217, 255, 0.4),
-                        inset -8px -8px 15px rgba(0, 0, 0, 0.3);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 40% 40%, #00ffff, #0080ff);
+            box-shadow: 0 0 35px rgba(0, 217, 255, 0.6),
+                        inset -12px -12px 25px rgba(0, 0, 0, 0.4);
             top: 80%;
-            right: -40px;
+            right: -50px;
             animation-delay: -45s;
         }
 
@@ -1246,12 +1447,25 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 55px;
-            height: 55px;
-            border: 2px solid rgba(0, 217, 255, 0.4);
+            width: 70px;
+            height: 70px;
+            border: 3px solid rgba(0, 217, 255, 0.5);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotateX(75deg);
-            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 217, 255, 0.4),
+                        inset 0 0 12px rgba(0, 217, 255, 0.2);
+        }
+
+        .planet-3::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 56px;
+            height: 56px;
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotateX(75deg);
         }
 
         @keyframes planet-drift {
@@ -1259,8 +1473,168 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(calc(-100vw - 100px));
+                transform: translateX(calc(-100vw - 150px));
             }
+        }
+
+        /* Math Game Modal */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .game-modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-content {
+            background: var(--bg-card);
+            border: 2px solid var(--secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .game-content h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .game-question {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .game-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 217, 255, 0.1);
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.4);
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .game-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn.submit {
+            background: var(--gradient-warm);
+            color: white;
+        }
+
+        .game-btn.submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 94, 120, 0.4);
+        }
+
+        .game-btn.hint {
+            background: var(--gradient-cool);
+            color: white;
+        }
+
+        .game-btn.hint:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+        }
+
+        .game-btn.close {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .game-btn.close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .game-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            min-height: 30px;
+        }
+
+        .game-message.success {
+            color: #00ff88;
+        }
+
+        .game-message.error {
+            color: #ff5e78;
+        }
+
+        .game-message.hint-text {
+            color: var(--accent);
+        }
+
+        .secret-content {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .secret-content.revealed {
+            display: block;
+        }
+
+        .secret-quote {
+            font-size: 1.5rem;
+            color: var(--accent);
+            font-style: italic;
+            margin: 2rem 0;
+            line-height: 1.8;
+        }
+
+        .secret-author {
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -1272,9 +1646,9 @@
     <div id="meteors"></div>
 
     <!-- Planets -->
-    <div class="planet planet-1"></div>
-    <div class="planet planet-2"></div>
-    <div class="planet planet-3"></div>
+    <div class="planet planet-1" title="Click me!"></div>
+    <div class="planet planet-2" title="Click me!"></div>
+    <div class="planet planet-3" title="Click me!"></div>
 
     <!-- Animated gradient orbs -->
     <div class="orb orb-1"></div>
@@ -1287,11 +1661,45 @@
     <!-- Journey Path -->
     <div class="journey-path"></div>
 
+    <!-- Flying Rocket -->
+    <div class="flying-rocket" id="flyingRocket">
+        <div class="rocket-nose"></div>
+        <div class="rocket-body"></div>
+        <div class="rocket-window"></div>
+        <div class="rocket-fin-left"></div>
+        <div class="rocket-fin-right"></div>
+        <div class="rocket-flame"></div>
+    </div>
+
     <!-- Progress Bar -->
     <div class="journey-progress" id="journeyProgress"></div>
 
     <!-- Cursor Trail -->
     <div class="cursor-trail" id="cursorTrail"></div>
+
+    <!-- Math Game Modal -->
+    <div class="game-modal" id="gameModal">
+        <div class="game-content">
+            <h2>🧮 Mathematical Challenge</h2>
+            <div class="game-question" id="gameQuestion">
+                If a rocket travels at 11 km/s and needs to reach a space station 40,320 km away, how many hours will it take? 🚀
+            </div>
+            <input type="text" class="game-input" id="gameInput" placeholder="Enter your answer">
+            <div class="game-buttons">
+                <button class="game-btn submit" onclick="checkAnswer()">Submit</button>
+                <button class="game-btn hint" onclick="showHint()">Hint</button>
+                <button class="game-btn close" onclick="closeGame()">Close</button>
+            </div>
+            <div class="game-message" id="gameMessage"></div>
+            
+            <div class="secret-content" id="secretContent">
+                <div class="secret-quote">
+                    "The only way to do great work is to love what you do. Keep reaching for the stars, and remember: every line of code is a step toward the impossible becoming possible."
+                </div>
+                <div class="secret-author">— Inspired by dreamers and achievers</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Navigation -->
     <nav id="navbar">
@@ -1728,17 +2136,190 @@
     </footer>
 
     <script>
+        // Math Game Logic
+        let hintShown = false;
+        const correctAnswer = "1.008"; // 40320 km / 11 km/s = 3665.45 seconds = 1.018 hours
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('gameInput').value.trim();
+            const message = document.getElementById('gameMessage');
+            
+            // Accept various correct formats
+            if (userAnswer === "1.008" || userAnswer === "1" || 
+                userAnswer === "1.01" || userAnswer === "1.0") {
+                message.textContent = '🎉 Correct! Unlocking secret content...';
+                message.className = 'game-message success';
+                
+                setTimeout(() => {
+                    document.getElementById('secretContent').classList.add('revealed');
+                    document.getElementById('gameQuestion').style.display = 'none';
+                    document.getElementById('gameInput').style.display = 'none';
+                    document.querySelector('.game-buttons').style.display = 'none';
+                }, 1000);
+            } else {
+                message.textContent = '❌ Not quite right. Try again!';
+                message.className = 'game-message error';
+            }
+        }
+
+        function showHint() {
+            const message = document.getElementById('gameMessage');
+            if (!hintShown) {
+                message.textContent = '💡 Hint: Distance ÷ Speed = Time. Don\'t forget to convert seconds to hours!';
+                message.className = 'game-message hint-text';
+                hintShown = true;
+            } else {
+                message.textContent = '💡 Another hint: 40,320 km ÷ 11 km/s = ? seconds. Then divide by 3,600 to get hours.';
+                message.className = 'game-message hint-text';
+            }
+        }
+
+        function closeGame() {
+            document.getElementById('gameModal').classList.remove('active');
+            document.getElementById('gameInput').value = '';
+            document.getElementById('gameMessage').textContent = '';
+            document.getElementById('secretContent').classList.remove('revealed');
+            document.getElementById('gameQuestion').style.display = 'block';
+            document.getElementById('gameInput').style.display = 'block';
+            document.querySelector('.game-buttons').style.display = 'flex';
+            hintShown = false;
+        }
+
+        // Planet click to open game
+        document.querySelectorAll('.planet').forEach(planet => {
+            planet.addEventListener('click', () => {
+                document.getElementById('gameModal').classList.add('active');
+            });
+        });
+
+        // Enter key to submit
+        document.getElementById('gameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Flying Rocket Logic with transparency based on content
+        const flyingRocket = document.getElementById('flyingRocket');
+
+        function updateRocketPosition() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Don't show rocket in hero section
+            if (scrollY < windowHeight * 0.9) {
+                flyingRocket.classList.remove('visible');
+                flyingRocket.classList.remove('dimmed');
+                return;
+            }
+            
+            flyingRocket.classList.add('visible');
+            
+            // Calculate position (20% to 80% of viewport)
+            const scrollPercent = scrollY / (documentHeight - windowHeight);
+            const rocketY = windowHeight * 0.2 + (scrollPercent * windowHeight * 0.6);
+            
+            flyingRocket.style.top = rocketY + 'px';
+            
+            // Check if rocket is near content
+            const rocketRect = flyingRocket.getBoundingClientRect();
+            const sections = document.querySelectorAll('section, .section-title, .experience-card, .project-card, .skill-category');
+            
+            let nearContent = false;
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                // Check if rocket overlaps with content
+                if (rocketRect.top < rect.bottom && rocketRect.bottom > rect.top &&
+                    rocketRect.left < rect.right && rocketRect.right > rect.left) {
+                    nearContent = true;
+                }
+            });
+            
+            if (nearContent) {
+                flyingRocket.classList.add('dimmed');
+            } else {
+                flyingRocket.classList.remove('dimmed');
+            }
+        }
+
+        // Constellation interaction - connect nearby stars on hover
+        const starfield = document.getElementById('starfield');
+        let constellationLines = [];
+        
+        function createConstellationLine(x1, y1, x2, y2) {
+            const line = document.createElement('div');
+            line.style.position = 'absolute';
+            line.style.height = '1px';
+            line.style.background = 'rgba(0, 217, 255, 0.4)';
+            line.style.transformOrigin = 'left center';
+            line.style.pointerEvents = 'none';
+            
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            line.style.width = length + 'px';
+            line.style.left = x1 + 'px';
+            line.style.top = y1 + 'px';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.opacity = '0';
+            line.style.transition = 'opacity 0.5s ease';
+            
+            starfield.appendChild(line);
+            return line;
+        }
+        
+        starfield.addEventListener('mouseenter', () => {
+            // Clear existing lines
+            constellationLines.forEach(line => line.remove());
+            constellationLines = [];
+            
+            // Get all stars
+            const allStars = Array.from(starfield.querySelectorAll('.star'));
+            
+            // Create lines between nearby stars
+            allStars.forEach((star1, i) => {
+                const rect1 = star1.getBoundingClientRect();
+                const x1 = rect1.left + rect1.width / 2;
+                const y1 = rect1.top + rect1.height / 2;
+                
+                allStars.slice(i + 1).forEach(star2 => {
+                    const rect2 = star2.getBoundingClientRect();
+                    const x2 = rect2.left + rect2.width / 2;
+                    const y2 = rect2.top + rect2.height / 2;
+                    
+                    const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                    
+                    // Only connect stars within 150px
+                    if (distance < 150 && constellationLines.length < 15) {
+                        const line = createConstellationLine(x1, y1, x2, y2);
+                        constellationLines.push(line);
+                        setTimeout(() => line.style.opacity = '1', 10);
+                    }
+                });
+            });
+        });
+        
+        starfield.addEventListener('mouseleave', () => {
+            constellationLines.forEach(line => {
+                line.style.opacity = '0';
+                setTimeout(() => line.remove(), 500);
+            });
+            constellationLines = [];
+        });
+
         // Enhanced starfield with different sizes and constellations
         const stars = [];
         function createStarfield() {
             const starfield = document.getElementById('starfield');
-            const starCount = 80; // Reduced from 150
+            const starCount = 80;
             
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 
-                // Randomly assign sizes
                 const sizeRand = Math.random();
                 if (sizeRand < 0.6) {
                     star.classList.add('small');
@@ -1785,24 +2366,6 @@
             heroContent.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
         });
 
-        // Typewriter effect for subtitle
-        const subtitle = document.querySelector('.hero .subtitle');
-        const subtitleText = subtitle.textContent;
-        subtitle.textContent = '';
-        subtitle.style.opacity = '1';
-        
-        let charIndex = 0;
-        function typeWriter() {
-            if (charIndex < subtitleText.length) {
-                subtitle.textContent += subtitleText.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 80);
-            }
-        }
-        
-        // Start typing after hero loads
-        setTimeout(typeWriter, 1500);
-
         // Particle system
         const particleCanvas = document.getElementById('particleCanvas');
         const ctx = particleCanvas.getContext('2d');
@@ -1828,31 +2391,26 @@
             }
 
             update(mouseX, mouseY) {
-                // Calculate distance to mouse
                 const dx = mouseX - this.x;
                 const dy = mouseY - this.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 const maxDistance = 150;
 
-                // Magnetic attraction to mouse
                 if (distance < maxDistance) {
                     const force = (maxDistance - distance) / maxDistance;
                     const angle = Math.atan2(dy, dx);
                     this.vx += Math.cos(angle) * force * 0.3;
                     this.vy += Math.sin(angle) * force * 0.3;
                 } else {
-                    // Return to base position when far from mouse
                     this.vx += (this.baseX - this.x) * 0.01;
                     this.vy += (this.baseY - this.y) * 0.01;
                 }
 
-                // Apply velocity with damping
                 this.x += this.vx;
                 this.y += this.vy;
                 this.vx *= 0.95;
                 this.vy *= 0.95;
 
-                // Boundary check
                 if (this.x < 0 || this.x > particleCanvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > particleCanvas.height) this.vy *= -1;
             }
@@ -1886,7 +2444,6 @@
                 particle.draw();
             });
 
-            // Draw connections
             particles.forEach((p1, i) => {
                 particles.slice(i + 1).forEach(p2 => {
                     const dx = p1.x - p2.x;
@@ -1915,35 +2472,29 @@
             const meteor = document.createElement('div');
             meteor.className = 'meteor';
             
-            // Random starting position at the top-right area
-            const startX = Math.random() * 50 + 50; // 50-100% from left
-            const startY = Math.random() * 30; // 0-30% from top
+            const startX = Math.random() * 50 + 50;
+            const startY = Math.random() * 30;
             
             meteor.style.left = startX + '%';
             meteor.style.top = startY + '%';
             
-            // Random duration for variety
-            const duration = Math.random() * 1 + 1.5; // 1.5-2.5 seconds
+            const duration = Math.random() * 1 + 1.5;
             meteor.style.animationDuration = duration + 's';
             
             meteorsDiv.appendChild(meteor);
             
-            // Remove meteor after animation
             setTimeout(() => {
                 meteor.remove();
             }, duration * 1000);
         }
 
-        // Create meteors at random intervals
         function startMeteorShower() {
             createMeteor();
             
-            // Next meteor in 3-8 seconds
             const nextMeteor = Math.random() * 5000 + 3000;
             setTimeout(startMeteorShower, nextMeteor);
         }
 
-        // Start the meteor shower after a delay
         setTimeout(startMeteorShower, 2000);
 
         // Enhanced cursor trail effect with multiple dots
@@ -1952,7 +2503,6 @@
         const trailDots = [];
         const trailLength = 8;
 
-        // Create multiple trail dots
         for (let i = 0; i < trailLength; i++) {
             const dot = document.createElement('div');
             dot.className = 'cursor-trail';
@@ -1966,7 +2516,6 @@
             cursorY = e.clientY;
         });
 
-        // Animate trail dots
         function animateTrail() {
             let targetX = cursorX;
             let targetY = cursorY;
@@ -2005,7 +2554,7 @@
             });
         });
 
-        // Navbar scroll effect
+        // Navbar scroll effect and rocket position
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             const journeyProgress = document.getElementById('journeyProgress');
@@ -2016,11 +2565,13 @@
                 navbar.classList.remove('scrolled');
             }
 
-            // Progress bar
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const scrolled = (winScroll / height) * 100;
             journeyProgress.style.width = scrolled + "%";
+            
+            // Update rocket position
+            updateRocketPosition();
         });
 
         // Intersection Observer for scroll-triggered storytelling animations
@@ -2037,7 +2588,6 @@
             });
         }, observerOptions);
 
-        // Section entrance animations
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2054,7 +2604,6 @@
             observer.observe(el);
         });
 
-        // Card flip animation for Projects
         document.querySelectorAll('.project-card').forEach((card, index) => {
             const cardObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -2069,7 +2618,6 @@
             cardObserver.observe(card);
         });
 
-        // Slide up animation for Skills
         document.querySelectorAll('.skill-category').forEach((category, index) => {
             const skillObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
