@@ -488,53 +488,48 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Typewriter effect */
+        /* Typewriter effect - JavaScript controlled */
         .typewriter {
-            overflow: hidden;
-            border-right: 3px solid var(--secondary);
-            white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+            display: block;              
+            position: relative;
+            width: fit-content; 
         }
-        
+
+        .typewriter::after {
+            content: '|';
+            position: absolute;
+            right: -8px;
+            color: var(--secondary);
+            animation: blink-caret 0.75s step-end infinite;
+        }
+
+        .typewriter.typing-done::after {
+            display: none;
+        }
+
         .typewriter-description {
-            overflow: hidden;
-            border-right: 3px solid var(--secondary);
-            white-space: normal;
-            animation: typing-description 5s steps(150, end) 3.5s both, blink-caret 0.75s step-end infinite 3.5s;
+            display: block;
+            position: relative;
         }
-        
-        @keyframes typing {
-            from { 
-                width: 0;
-            }
-            to { 
-                width: 100%;
-            }
+
+        .typewriter-description::after {
+            content: '|';
+            color: var(--secondary);
+            animation: blink-caret 0.75s step-end infinite;
+            margin-left: 2px;
         }
-        
-        @keyframes typing-description {
-            from { 
-                max-width: 0;
-            }
-            to { 
-                max-width: 100%;
-            }
+
+        .typewriter-description.typing-done::after {
+            display: none;
         }
-        
+
         @keyframes blink-caret {
-            from, to { 
-                border-color: transparent;
+            0%, 100% { 
+                opacity: 1;
             }
             50% { 
-                border-color: var(--secondary);
+                opacity: 0;
             }
-        }
-        
-        /* Hide caret after typing completes */
-        .typewriter.typing-done,
-        .typewriter-description.typing-done {
-            border-right: none;
-            animation: none;
         }
 
         .cta-button {
@@ -2144,26 +2139,58 @@
     </footer>
 
     <script>
-        // Typewriter effect - remove caret after animation
+        // ==== TYPEWRITER EFFECT - JavaScript Implementation ====
         document.addEventListener('DOMContentLoaded', function() {
             const subtitle = document.getElementById('subtitle');
             const description = document.getElementById('description');
             
-            // Remove caret from subtitle after 4 seconds
-            setTimeout(() => {
-                if (subtitle) {
-                    subtitle.classList.add('typing-done');
+            if (subtitle && description) {
+                const subtitleText = subtitle.textContent;
+                const descriptionText = description.textContent.trim();
+                
+                // Clear initial text
+                subtitle.textContent = '';
+                description.textContent = '';
+                
+                let subtitleIndex = 0;
+                let descriptionIndex = 0;
+                
+                // Type subtitle first
+                function typeSubtitle() {
+                    if (subtitleIndex < subtitleText.length) {
+                        subtitle.textContent += subtitleText.charAt(subtitleIndex);
+                        subtitleIndex++;
+                        setTimeout(typeSubtitle, 50); // 50ms per character
+                    } else {
+                        // Subtitle done, wait 500ms then start description
+                        setTimeout(() => {
+                            typeDescription();
+                        }, 500);
+                    }
                 }
-            }, 4000);
-            
-            // Remove caret from description after 9 seconds
-            setTimeout(() => {
-                if (description) {
-                    description.classList.add('typing-done');
+                
+                // Type description
+                function typeDescription() {
+                    if (descriptionIndex < descriptionText.length) {
+                        description.textContent += descriptionText.charAt(descriptionIndex);
+                        descriptionIndex++;
+                        setTimeout(typeDescription, 30); // 30ms per character for longer text
+                    } else {
+                        // Both done, hide carets after 1 second
+                        setTimeout(() => {
+                            subtitle.classList.add('typing-done');
+                            description.classList.add('typing-done');
+                        }, 1000);
+                    }
                 }
-            }, 9000);
+                
+                // Start typing after 300ms delay
+                setTimeout(typeSubtitle, 300);
+            }
         });
-        
+        // ==== END TYPEWRITER EFFECT ====
+
+        // Math Game Logic
         let hintShown = false;
         const correctAnswer = "1.008"; // 40320 km / 11 km/s = 3665.45 seconds = 1.018 hours
 
