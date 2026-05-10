@@ -499,32 +499,56 @@
            ============================================================ */
 
         @media (max-width: 768px) {
-            /* Show hamburger, hide desktop nav */
+            /* Show hamburger, hide desktop nav links by default */
             .hamburger { display: flex; }
             .nav-links { display: none; }
 
-            /* Mobile nav drawer styles */
-            .nav-links.mobile-open {
-                display: flex !important;
+            /* When menu is open, the nav itself becomes the fullscreen overlay.
+               This avoids the stacking-context trap caused by backdrop-filter
+               on the parent nav element. */
+            nav.menu-open {
+                height: 100dvh;
+                background: rgba(8, 12, 32, 0.99) !important;
+                backdrop-filter: blur(30px);
+                display: flex;
                 flex-direction: column;
-                position: fixed;
-                top: 0; left: 0; right: 0; bottom: 0;
-                background: rgba(10,14,39,0.98);
-                backdrop-filter: blur(20px);
-                justify-content: center;
-                align-items: center;
-                gap: 2rem;
-                z-index: 1050;
-                animation: mobileNavIn 0.35s ease both;
+                animation: mobileNavIn 0.25s ease both;
+                overflow: hidden;
             }
             @keyframes mobileNavIn {
-                from { opacity: 0; transform: translateY(-20px); }
-                to   { opacity: 1; transform: translateY(0); }
+                from { opacity: 0; }
+                to   { opacity: 1; }
             }
-            .nav-links.mobile-open a {
-                font-size: 1.4rem;
-                padding: 0.8rem 2rem;
+            nav.menu-open .nav-container {
+                /* logo + X stays pinned at the top */
+                flex-shrink: 0;
             }
+            nav.menu-open .nav-links {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                gap: 0;
+                padding-bottom: 3rem;
+            }
+            nav.menu-open .nav-links li { width: 100%; text-align: center; }
+            nav.menu-open .nav-links a {
+                display: block;
+                font-size: 1.45rem;
+                font-weight: 600;
+                letter-spacing: -0.3px;
+                padding: 0.95rem 2rem;
+                color: rgba(255,255,255,0.75);
+                border-radius: 0;
+                transition: color 0.2s ease, background 0.2s ease;
+            }
+            nav.menu-open .nav-links a:hover,
+            nav.menu-open .nav-links a:active {
+                color: #ffffff;
+                background: rgba(255,255,255,0.04);
+            }
+            nav.menu-open .nav-links a::after { display: none; }
 
             .nav-container { padding: 0 1.25rem; }
             .logo { font-size: 1.3rem; }
@@ -1091,22 +1115,31 @@
 
         // ==== HAMBURGER MENU ====
         const hamburger = document.getElementById('hamburger');
-        const navLinks  = document.getElementById('navLinks');
+        const navbar    = document.getElementById('navbar');
+
+        function openMenu() {
+            hamburger.classList.add('open');
+            navbar.classList.add('menu-open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMenu() {
+            hamburger.classList.remove('open');
+            navbar.classList.remove('menu-open');
+            document.body.style.overflow = '';
+        }
 
         hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('open');
-            navLinks.classList.toggle('mobile-open');
-            // Prevent body scroll while menu open
-            document.body.style.overflow = navLinks.classList.contains('mobile-open') ? 'hidden' : '';
+            navbar.classList.contains('menu-open') ? closeMenu() : openMenu();
         });
 
-        // Close nav when any nav link is clicked
+        // Close when a nav link is tapped
         document.querySelectorAll('.nav-close-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                navLinks.classList.remove('mobile-open');
-                document.body.style.overflow = '';
-            });
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Close if user taps outside the nav area (e.g. swipes down)
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeMenu();
         });
 
         // ==== MATH GAME ====
@@ -1288,9 +1321,9 @@
 
         // ==== SCROLL HANDLING ====
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 100) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
+            const navbarEl = document.getElementById('navbar');
+            if (window.scrollY > 100) navbarEl.classList.add('scrolled');
+            else navbarEl.classList.remove('scrolled');
             const progress = (document.body.scrollTop || document.documentElement.scrollTop) /
                 (document.documentElement.scrollHeight - document.documentElement.clientHeight) * 100;
             document.getElementById('journeyProgress').style.width = progress + '%';
