@@ -1,1 +1,1 @@
-Ellie's personal web
+Ellie's personal profolio
